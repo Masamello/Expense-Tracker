@@ -1,6 +1,5 @@
 /* Kaho starts here */
 document.addEventListener('DOMContentLoaded', getToday);
-document.addEventListener('DOMContentLoaded', expensesInput);
 
 function getToday(){
   let today = new Date();
@@ -12,8 +11,26 @@ function getToday(){
   document.querySelector('#today').value = `${yyyy}-${mm}-${dd}`;
 }
 
-function expensesInput(){
-  document.querySelector('#informationInputSubmit').addEventListener('click', (e) => {
-    e.preventDefault(); // prevent default actions(reloading the page) when clicking submit button
-  })
-}
+//information input section button click event
+document.querySelector('#informationInputSubmit').addEventListener('click', (e) => {
+  e.preventDefault();
+  const date = document.querySelector('#today').value;
+  const amount = parseFloat((document.querySelector('#inputAmount').value)).toFixed(2); 
+    //parseFloatは小数点以下を含む数値に変換、toFixed(2)で小数点以下2桁にする
+  const descripttion = document.querySelector('#inputDescription') .value;
+  const category = document.querySelector('input[name="categories"]:checked').value;
+  const id = getLastId();
+  const data = {date: date, amount: amount, descripttion: descripttion, category: category};
+  
+  localStorage.setItem(id, JSON.stringify(data));
+});
+
+function getLastId(){
+  let lastId = localStorage.getItem('id');
+  console.log("lastId(before parse):", localStorage.getItem('id'));
+  lastId = lastId !== null ? parseInt(lastId) : 0; //lastIdが存在すればintegerにして取得、なければ0を返す
+  console.log("lastId(after parse):", lastId);
+  const newId = lastId + 1;
+  localStorage.setItem('id', newId);
+  return newId;
+};
