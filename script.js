@@ -1,5 +1,6 @@
 /* Kaho starts here */
 document.addEventListener('DOMContentLoaded', getToday);
+document.addEventListener('DOMContentLoaded', initialTable);
 
 function getToday(){
   let today = new Date();
@@ -10,6 +11,18 @@ function getToday(){
   let dd = ("0"+today.getDate()).slice(-2);
   document.querySelector('#today').value = `${yyyy}-${mm}-${dd}`;
 }
+
+//information input section
+//ID取得
+function getLastId(){
+  let lastId = localStorage.getItem('id');
+  console.log("lastId(before parse):", localStorage.getItem('id'));
+  lastId = lastId !== null ? parseInt(lastId) : 0; //lastIdが存在すればintegerにして取得、なければ0を返す
+  console.log("lastId(after parse):", lastId);
+  const newId = lastId + 1;
+  localStorage.setItem('id', newId);
+  return newId;
+};
 
 //information input section button click event
 document.querySelector('#informationInputSubmit').addEventListener('click', (e) => {
@@ -24,7 +37,7 @@ document.querySelector('#informationInputSubmit').addEventListener('click', (e) 
 
   const id = getLastId();
   const date = document.querySelector('#today').value;
-  const descripttion = document.querySelector('#inputDescription') .value;
+  const description = document.querySelector('#inputDescription') .value;
 
   //categoryが選択されているか、されていなければalertで通知。選択後にそのvalueを取得
   const selectCategory = document.querySelector('input[name="categories"]:checked');
@@ -40,20 +53,36 @@ document.querySelector('#informationInputSubmit').addEventListener('click', (e) 
     alert("Please add amount.");
     return;
   }
-  const amount = parseFloat((document.querySelector('#inputAmount').value)).toFixed(2); 
+  const amount = (parseFloat((document.querySelector('#inputAmount').value))).toFixed(2); 
       //parseFloatは小数点以下を含む数値に変換、toFixed(2)で小数点以下2桁にする
 
   //各項目の入力後各データをdataに格納、localstrageに保存
-  const data = {date: date, amount: amount, descripttion: descripttion, category: category};
+  const data = {date: date, category: category, amount: amount, description: description};
   localStorage.setItem(id, JSON.stringify(data));
+  
+  //テーブルに表示
+  tableBody(data);
+
 });
 
-function getLastId(){
-  let lastId = localStorage.getItem('id');
-  console.log("lastId(before parse):", localStorage.getItem('id'));
-  lastId = lastId !== null ? parseInt(lastId) : 0; //lastIdが存在すればintegerにして取得、なければ0を返す
-  console.log("lastId(after parse):", lastId);
-  const newId = lastId + 1;
-  localStorage.setItem('id', newId);
-  return newId;
-};
+//browser > localStrageに保存されているデータを取得、テーブルに初期表示(画面読み込み時)
+function initialTable() {
+  for (let i = 0; i < localStorage.length; i++){
+    const key = localStorage.key(i);
+    const value = JSON.parse(localStorage.getItem(key));
+    tableBody(value);
+  }
+}
+
+//dataを受け取ってテーブルへ反映
+const tableBody = (data) => {
+  const tr = document.createElement('tr');
+  for (let itemKey in data) {
+      const td = document.createElement('td');
+      td.innerText = data[itemKey];
+      tr.append(td);
+    }
+    document.querySelector('.infoTable').append(tr);
+}
+
+
