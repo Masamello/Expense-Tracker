@@ -168,10 +168,14 @@ document.querySelector('.infoTable').addEventListener('click', (e) =>{
         const category = inputs[1].value;
         const amount = parseFloat(inputs[2].value).toFixed(2);
         const description = inputs[3].value;
+        if (date && category && amount){
+          const updatedData = { date: date, category: category, amount: amount, descripttion: description };
+          localStorage.setItem(id, JSON.stringify(updatedData));
+          location.reload();
+        } else {
+          alert('Please make sure to enter the date, category, and amount.');
+        }
 
-        const updatedData = { date: date, category: category, amount: amount, descripttion: description };
-        localStorage.setItem(id, JSON.stringify(updatedData));
-        location.reload();
 
       }else if(e.target.classList.contains('cancelBtn')){    //Edit > Cancel Button
         const savedData = JSON.parse(localStorage.getItem(id));
