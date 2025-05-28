@@ -1,4 +1,4 @@
-let chartInstance = null; // グローバル変数として保持（再描画のため）
+let chartInstance = null; 
 
 function renderChartWithChartJS() {
   const data = getAllExpenseData();
@@ -6,7 +6,7 @@ function renderChartWithChartJS() {
 
   const ctx = document.getElementById('expenseChart').getContext('2d');
 
-  // 既存チャートがある場合は破棄してから再描画
+  // 既存チャートがある場合は破棄して再描画
   if (chartInstance) {
     chartInstance.destroy();
   }
@@ -49,6 +49,7 @@ function renderChartWithChartJS() {
   });
 }
 
+// データの読みとり
 function getAllExpenseData() {
   const expenses = [];
   for (let i = 0; i < localStorage.length; i++) {
@@ -61,6 +62,7 @@ function getAllExpenseData() {
   return expenses;
 }
 
+// カテゴリ合計
 function calculateCategoryTotals(data) {
   const totals = {};
   for (let category of categories) {
