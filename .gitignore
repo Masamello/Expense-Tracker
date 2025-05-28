@@ -70,12 +70,3 @@ Thumbs.db
 *.mov
 *.wmv
 
-<div class="progressContainer" id="myChart">
-                <div class="progressBar" style="width: 50%"></div>
-            </div>
-
-function updateProgressBar(Expense, Badget) {
-    let percentage = (Expense / Badget) * 100;
-    document.querySelector(".progressBar").style.width = percentage + "%";
-}
-updateProgressBar(800, 1000);
