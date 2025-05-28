@@ -86,7 +86,7 @@ const categories = ['food', 'phone_charge', 'transportation', 'entertainment', '
 
 document.addEventListener('DOMContentLoaded', getToday);
 document.addEventListener('DOMContentLoaded', setCategories(categories));
-document.addEventListener('DOMContentLoaded', initialTable);
+document.addEventListener('DOMContentLoaded', displayTable);
 
 //-----information input section-----
 function getToday(){
@@ -167,18 +167,32 @@ document.querySelector('#informationInputSubmit').addEventListener('click', (e) 
   localStorage.setItem(id, JSON.stringify(data));
   
   //テーブルに表示
-  tableBody(data, id);
+  displayTable();
 });
 
-//browser > localStrageに保存されているデータを取得、テーブルに初期表示(画面読み込み時)
-function initialTable() {
+//browser > localStrageに保存されているデータを取得、テーブルに表示
+function displayTable() {
+  const tbody = document.querySelector('tbody');
+  tbody.innerText = '';
+  const dataArray = [];
+
   for (let i = 0; i < localStorage.length; i++){
     const key = localStorage.key(i);
     if (key !== 'id'){
       const value = JSON.parse(localStorage.getItem(key));
-      tableBody(value, key);
+      // tableBody(value, key);
+      dataArray.push({key, value}); //データを配列に取得
     };
   };
+  dataArray.sort((a, b) => { //a,b は各object{key: id, value: {date: "", .....}}
+    const dateA = new Date(a.value.date); 
+    const dateB = new Date(b.value.date);
+    return dateA - dateB; //dateA - dateB < 0 : a を b より前にする(昇順)
+  });
+
+  for (let item of dataArray) {
+    tableBody(item.value, item.key);
+  }
 };
 
 //button作成 (edit/delete/save/cancelなどで複数回利用)
