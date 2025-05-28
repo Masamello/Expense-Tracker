@@ -8,24 +8,6 @@
 
 /* Masa starts here */
 /* ================================= expenceIndicator section ================================= */
-.progressContainer {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    background-color: #ddd;
-    border-radius: 1px;
-    overflow: hidden;
-    margin-top: 5%;
-}
-
-.progressBar {
-    position: absolute;
-    height: 100%;
-    background-color: #4caf50;
-    width: 0%;
-    transition: width 1.7s ease-in-out;
-    z-index: 1;
-}
 /* ================================== badgetExpence section ================================ */
 
 /* Kaho starts here */
