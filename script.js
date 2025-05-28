@@ -1,7 +1,11 @@
 /* Kaho starts here */
+const categories = ['food', 'phone_charge', 'transportation', 'entertainment', 'rent', 'clothes', 'others'];
+
 document.addEventListener('DOMContentLoaded', getToday);
+document.addEventListener('DOMContentLoaded', setCategories(categories));
 document.addEventListener('DOMContentLoaded', initialTable);
 
+//-----information input section-----
 function getToday(){
   let today = new Date();
   today.setDate(today.getDate());
@@ -12,13 +16,32 @@ function getToday(){
   document.querySelector('#today').value = `${yyyy}-${mm}-${dd}`;
 }
 
-//-----information input section-----
+//categories埋め込み
+function setCategories(categories) {
+  const addInputs = document.querySelector('.categories');
+  for (category of categories) {
+    const inputs = document.createElement('input');
+    inputs.classList.add('btn-check');
+    inputs.setAttribute('type','radio');
+    inputs.setAttribute('id','categories'+category);
+    inputs.setAttribute('name','categories');
+    inputs.setAttribute('value',category);
+    addInputs.append(inputs);
+
+    const labels = document.createElement('label');
+    labels.classList.add('btn', 'btn-outline-primary','rounded', 'm-1');
+    labels.setAttribute('for', 'categories'+category);
+    labels.innerText = capitalizeFirstLetter(category);
+    addInputs.append(labels);
+  }
+}
+
 //最後のID取得
 function getLastId(){
   let lastId = localStorage.getItem('id');
-  console.log("lastId(before parse):", localStorage.getItem('id'));
+  // console.log("lastId(before parse):", localStorage.getItem('id'));
   lastId = lastId !== null ? parseInt(lastId) : 0; //lastIdが存在すればintegerにして取得、なければ0を返す
-  console.log("lastId(after parse):", lastId);
+  // console.log("lastId(after parse):", lastId);
   const newId = lastId + 1;
   localStorage.setItem('id', newId);
   return newId;
@@ -101,7 +124,7 @@ const tableBody = (data, id) => {
 
   for (let itemKey in data) {
     const td = document.createElement('td');
-    console.log('itemkey',itemKey);
+    // console.log('itemkey',itemKey);
     if (itemKey === 'category') {
       td.innerText = capitalizeFirstLetter(data[itemKey]);
     }else {
@@ -141,7 +164,7 @@ document.querySelector('.infoTable').addEventListener('click', (e) =>{
         eachTd.innerText = '';
         eachTd.append(select);
 
-        const categories = ['food','phone_charge', 'transportation', 'entertainment', 'rent', 'cloths', 'others']
+        // const categories = ['food','phone_charge', 'transportation', 'entertainment', 'rent', 'clothes', 'others']
         for (category of categories) {
           option = document.createElement('option');
           option.innerText = capitalizeFirstLetter(category);
