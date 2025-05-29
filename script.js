@@ -168,6 +168,7 @@ document.querySelector('#informationInputSubmit').addEventListener('click', (e) 
   
   //テーブルに表示
   displayTable();
+  renderChartWithChartJS();
 });
 
 //browser > localStrageに保存されているデータを取得、テーブルに表示
@@ -261,7 +262,6 @@ document.querySelector('.infoTable').addEventListener('click', (e) =>{
         eachTd.innerText = '';
         eachTd.append(select);
 
-        // const categories = ['food','phone_charge', 'transportation', 'entertainment', 'rent', 'clothes', 'others']
         for (category of categories) {
           option = document.createElement('option');
           option.innerText = capitalizeFirstLetter(category);
@@ -285,7 +285,11 @@ document.querySelector('.infoTable').addEventListener('click', (e) =>{
       if (e.target.classList.contains('saveBtn')) {    //Edit > Save Button
         const inputs = targetRow.querySelectorAll('input, select'); //select: category
         const date = inputs[0].value;
-        const category = inputs[1].value;
+        // const category = inputs[1].value;
+        let category = inputs[1].value.toLowerCase(); //Phone Charge -> phone charge
+        if (category.includes(' ')){
+          category = category.replace(' ', '_');  //phone_charge
+        }
         const amount = parseFloat(inputs[2].value).toFixed(2);
         const description = inputs[3].value;
         if (date && category && amount){
@@ -295,11 +299,13 @@ document.querySelector('.infoTable').addEventListener('click', (e) =>{
         } else {
           alert('Please make sure to enter the date, category, and amount.');
         }
-
+        renderChartWithChartJS();
 
       }else if(e.target.classList.contains('cancelBtn')){    //Edit > Cancel Button
         const savedData = JSON.parse(localStorage.getItem(id));
         const values = [savedData.date, savedData.category, savedData.amount, savedData.description];
+        values[1] = capitalizeFirstLetter(values[1]); //categoryの1文字目を大文字にする
+        console.log(savedData);
         for (let i = 0; i < values.length; i++) {
           tdAll[i].innerText = values[i];
         }
