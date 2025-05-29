@@ -1,6 +1,12 @@
 // Masa starts here
 let chartInstance = null; 
 
+const budgets = {
+  transportation:300,
+  rent:800,
+  food:300,
+};
+
 function renderChartWithChartJS() {
   const data = getAllExpenseData();
   const totals = calculateCategoryTotals(data);
@@ -52,6 +58,7 @@ function renderChartWithChartJS() {
   renderBudgetExpenseTables(totals);
 }
 
+// 予算、費用の合計金額テーブル表示
 function renderTotalBudgetExpenseTable(totals){
   let totalBudget = 0;
   let totalExpense = 0;
@@ -84,6 +91,7 @@ function renderTotalBudgetExpenseTable(totals){
   return table;
 }
 
+// カテゴリ別予算、費用テーブル作成
 function renderCategoryBudegetExpense(totals){
   const table = document.createElement('table');
   table.classList.add('table','table-bordered');
@@ -103,8 +111,8 @@ function renderCategoryBudegetExpense(totals){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${capitalizeFirstLetter(cat)}</td>
-      <td>$${budget.toFixed(2)}</td>
-      <td>$${expense.toFixed(2)}</td>
+      <td>${budget.toFixed(2)}</td>
+      <td>${expense.toFixed(2)}</td>
     `;
     tbody.appendChild(thead);
   }
@@ -113,6 +121,7 @@ function renderCategoryBudegetExpense(totals){
   return table;
 }
 
+// badgetExpenceセクションに上記二つの関数を表示
 function renderBudgetExpenseTables(totals){
   const container = document.querySelector('.badgetExpence');
   container.innerHTML = '';
