@@ -2,9 +2,13 @@
 let chartInstance = null; 
 
 const budgets = {
-  transportation:300,
-  rent:800,
-  food:300,
+  food:600,
+  phone_charge:0,
+  transportation:0,
+  entertainment:0,
+  rent:0,
+  clothes:0,
+  others:0
 };
 
 function renderChartWithChartJS() {
@@ -65,7 +69,7 @@ function renderTotalBudgetExpenseTable(totals){
   for(let cat in budgets){
     totalBudget += budgets[cat];
   }
-  for(const cat in totals){
+  for(let cat in totals){
     totalExpense += totals[cat];
   }
 
@@ -74,22 +78,29 @@ function renderTotalBudgetExpenseTable(totals){
 
   const thead = document.createElement('thead');
   thead.innerHTML = `
-  <tr>
-    <th>Total Budget</th>
-    <th>Total Expense</th>
-  </tr>`;
+    <tr>
+      <th>Total Budget</th>
+      <th>Total Expense</th>
+    </tr>`;
 
-  const tbody = document.createElement('tbody');
-  tbody.innerHTML = `
-  <tr>
-    <td>$${totalBudget.toFixed(2)}</td>
-    <td>$${totalExpense.toFixed(2)}</td>
-  </tr>`;
+  const tbody = document.createElement("tbody");
+  const tr = document.createElement("tr");
 
-  table.appendChild(thead);
-  table.appendChild(tbody);
+  const tdBudget = document.createElement("td");
+  tdBudget.innerText = `$${totalBudget.toFixed(2)}`;
+
+  const tdExpense = document.createElement("td");
+  tdExpense.innerText = `$${totalExpense.toFixed(2)}`;
+
+  tr.append(tdBudget, tdExpense);
+  console.log(tr)
+  tbody.appendChild(tr);
+  console.log(tbody)
+  table.append(thead, tbody);
+  
   return table;
 }
+
 
 // カテゴリ別予算、費用テーブル作成
 function renderCategoryBudegetExpense(totals){
@@ -125,8 +136,9 @@ function renderCategoryBudegetExpense(totals){
 function renderBudgetExpenseTables(totals){
   const container = document.querySelector('.badgetExpence');
   container.innerHTML = '';
-
+  console.log(totals);
   const totalTbale = renderTotalBudgetExpenseTable(totals);
+  console.log(totalTbale);
   const categoryTable = renderCategoryBudegetExpense(totals);
 
   container.appendChild(totalTbale);
