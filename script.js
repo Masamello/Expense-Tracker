@@ -268,7 +268,8 @@ document.querySelector('#informationInputSubmit').addEventListener('click', (e) 
 
 //browser > localStrageに保存されているデータを取得、テーブルに表示
 function displayTable() {
-  const tbody = document.querySelector('tbody');
+  const tbody = document.querySelector('.expenceLists tbody');
+  console.log(tbody)
   tbody.innerText = '';
   const dataArray = [];
 
@@ -283,7 +284,7 @@ function displayTable() {
   dataArray.sort((a, b) => { //a,b は各object{key: id, value: {date: "", .....}}
     const dateA = new Date(a.value.date); 
     const dateB = new Date(b.value.date);
-    return dateA - dateB; //dateA - dateB < 0 : a を b より前にする(昇順)
+    return dateB - dateA; //dateA - dateB < 0 : a を b より前にする(昇順)
   });
 
   for (let item of dataArray) {
