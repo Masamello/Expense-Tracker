@@ -6,6 +6,10 @@
     scroll-behavior: smooth;
 }
 
+html {
+    font-size: calc(87.5% + 2 * (100vw - 576px) / 416) !important;
+}
+
 @media screen and (min-width:960px){
     
 }

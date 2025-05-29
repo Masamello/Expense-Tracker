@@ -111,10 +111,10 @@ function renderCategoryBudegetExpense(totals){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${capitalizeFirstLetter(cat)}</td>
-      <td>${budget.toFixed(2)}</td>
-      <td>${expense.toFixed(2)}</td>
+      <td>$${budget.toFixed(2)}</td>
+      <td>$${expense.toFixed(2)}</td>
     `;
-    tbody.appendChild(thead);
+    tbody.appendChild(tr);
   }
   table.appendChild(thead);
   table.appendChild(tbody);
