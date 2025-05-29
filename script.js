@@ -48,6 +48,80 @@ function renderChartWithChartJS() {
       }
     }
   });
+
+  renderBudgetExpenseTables(totals);
+}
+
+function renderTotalBudgetExpenseTable(totals){
+  let totalBudget = 0;
+  let totalExpense = 0;
+  for(let cat in budgets){
+    totalBudget += budgets[cat];
+  }
+  for(const cat in totals){
+    totalExpense += totals[cat];
+  }
+
+  const table = document.createElement('table');
+  table.classList.add('table','mb-3','table-bordered');
+
+  const thead = document.createElement('thead');
+  thead.innerHTML = `
+  <tr>
+    <th>Total Budget</th>
+    <th>Total Expense</th>
+  </tr>`;
+
+  const tbody = document.createElement('tbody');
+  tbody.innerHTML = `
+  <tr>
+    <td>$${totalBudget.toFixed(2)}</td>
+    <td>$${totalExpense.toFixed(2)}</td>
+  </tr>`;
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  return table;
+}
+
+function renderCategoryBudegetExpense(totals){
+  const table = document.createElement('table');
+  table.classList.add('table','table-bordered');
+  const thead = document.createElement('thead');
+  thead.innerHTML = `
+  <tr>
+    <th>Category</th>
+    <th>Budget</th>
+    <th>Expense</th>
+  </tr>`;
+
+  const tbody = document.createElement('tbody');
+  for(const cat of Object.keys(budgets)){
+    const budget = budgets[cat];
+    const expense = totals[cat] ? totals[cat] :0;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${capitalizeFirstLetter(cat)}</td>
+      <td>$${budget.toFixed(2)}</td>
+      <td>$${expense.toFixed(2)}</td>
+    `;
+    tbody.appendChild(thead);
+  }
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  return table;
+}
+
+function renderBudgetExpenseTables(totals){
+  const container = document.querySelector('.badgetExpence');
+  container.innerHTML = '';
+
+  const totalTbale = renderTotalBudgetExpenseTable(totals);
+  const categoryTable = renderCategoryBudegetExpense(totals);
+
+  container.appendChild(totalTbale);
+  container.appendChild(categoryTable);
 }
 
 // データの読みとり
