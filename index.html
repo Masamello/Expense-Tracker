@@ -17,17 +17,20 @@
             href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
             rel="stylesheet"
         />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
         <!-- Masa starts here -->
         <div class="conatiner">
             <section class="flex-row">
-                <section class="expenceIndicator"></section>
+                <section class="expenceIndicator mt-4" style="max-width: 500px;">
+                    <h3 class="text-center">Expense Breakdown</h3>
+                    <canvas id="expenseChart" width="400" height="400"></canvas>
+                </section>
                 <section class="badgetExpence">
                     <h3>Badget Expense</h3>
-                    <form id="budgetForm" class="budget-form row g-3">
-                        
-                    </form>
+                    <form id="budgetForm" class="budget-form row g-3"></form>
                 </section>
             </section>
         </div>
@@ -37,9 +40,16 @@
             <form action="" id="expensesInput">
                 <div class="input-group mb-3">
                     <label for="today" class="px-2">Date : </label>
-                    <input type="date" id="today" name="today" class="px-2 border border-primary rounded">
+                    <input
+                        type="date"
+                        id="today"
+                        name="today"
+                        class="px-2 border border-primary rounded"
+                    />
                 </div>
-                <div class="input-group mb-3 d-flex flex-row align-items-center">
+                <div
+                    class="input-group mb-3 d-flex flex-row align-items-center"
+                >
                     <p class="px-2 mb-0">Categories :</p>
                     <div class="d-flex flex-wrap flex-grow-1 categories">
                         <!-- contents will be created by JavaScript function -->
@@ -47,13 +57,30 @@
                 </div>
                 <div class="input-group mb-3">
                     <label for="inputAmount" class="px-2">Amount : $</label>
-                    <input type="text" id="inputAmount" name="inputAmount" class="px-2 border border-secondary rounded">
+                    <input
+                        type="text"
+                        id="inputAmount"
+                        name="inputAmount"
+                        class="px-2 border border-secondary rounded"
+                    />
                 </div>
                 <div class="input-group mb-3">
-                    <label for="inputDescription" class="px-2">Description : </label>
-                    <textarea name="inputDescription" id="inputDescription" class="px-2 border border-secondary rounded"></textarea>
+                    <label for="inputDescription" class="px-2"
+                        >Description :
+                    </label>
+                    <textarea
+                        name="inputDescription"
+                        id="inputDescription"
+                        class="px-2 border border-secondary rounded"
+                    ></textarea>
                 </div>
-                <button type="button" id="informationInputSubmit" class="px-2 border border-secondary rounded">Add</button>
+                <button
+                    type="button"
+                    id="informationInputSubmit"
+                    class="px-2 border border-secondary rounded"
+                >
+                    Add
+                </button>
             </form>
         </section>
 
@@ -62,12 +89,12 @@
             <table class="table">
                 <thead class="thead-light">
                     <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Categories</th>
-                    <th scope="col">Amount($)</th>
-                    <th scope="col">Description</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Categories</th>
+                        <th scope="col">Amount($)</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody class="infoTable">
