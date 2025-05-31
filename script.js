@@ -93,9 +93,7 @@ function renderTotalBudgetExpenseTable(totals){
   tdExpense.innerText = `$${totalExpense.toFixed(2)}`;
 
   tr.append(tdBudget, tdExpense);
-  console.log(tr)
   tbody.appendChild(tr);
-  console.log(tbody)
   table.append(thead, tbody);
   
   return table;
@@ -122,9 +120,16 @@ function renderCategoryBudegetExpense(totals){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${capitalizeFirstLetter(cat)}</td>
-      <td>$${budget.toFixed(2)}</td>
+      <td><input type="number" class="budgetInput" value="${budget.toFixed(2)}" data-category="${cat}" /></td>
       <td>$${expense.toFixed(2)}</td>
     `;
+
+    // もし予算が費用を下回れば背景色を変更
+    if(budget < expense){
+      tr.style.backgroundColor = "#FF4500"
+    }else{
+      tr.style.backgroundColor = "#00CED1"
+    }
     tbody.appendChild(tr);
   }
   table.appendChild(thead);
@@ -132,13 +137,22 @@ function renderCategoryBudegetExpense(totals){
   return table;
 }
 
+// 予算の変更を反映するイベントリスナー
+document.addEventListener('input',(eventObj)=>{
+  if(eventObj.target.classList.contains('budgetInput')){
+    const category = eventObj.dataset.category;
+    const newBudget = parseFloat(eventObj.target.value);
+    budgets[category] = newBudget;
+
+    renderChartWithChartJS(); //予算更新後、チャートとテーブル再描画
+  }
+})
+
 // badgetExpenceセクションに上記二つの関数を表示
 function renderBudgetExpenseTables(totals){
-  const container = document.querySelector('.badgetExpence');
+  const container = document.querySelector('.budgetExpence');
   container.innerHTML = '';
-  console.log(totals);
   const totalTbale = renderTotalBudgetExpenseTable(totals);
-  console.log(totalTbale);
   const categoryTable = renderCategoryBudegetExpense(totals);
 
   container.appendChild(totalTbale);
