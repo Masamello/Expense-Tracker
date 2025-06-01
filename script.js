@@ -73,6 +73,7 @@ function renderChartWithChartJS() {
   });
 
   renderBudgetExpenseTables(totals);
+  budgetEdit();
 }
 
 // 予算、費用の合計金額テーブル表示
@@ -124,6 +125,7 @@ function renderCategoryBudegetExpense(totals){
     <th>Budget</th>
     <th>Expense</th>
   </tr>`;
+  table.appendChild(thead);
 
   const tbody = document.createElement('tbody');
   for(const cat of Object.keys(budgets)){
@@ -136,13 +138,12 @@ function renderCategoryBudegetExpense(totals){
       <td>
         <div style="display: flex; gap: 5px; align-items: center;">
           <input type="number" class="budgetInput" value="${budget.toFixed(2)}" data-category="${cat}" />
-          <button type="button" class="btn btn-light editBtn" data-category="${cat}" id="budgetEdit">save</button>
+          <button type="button" class="btn btn-light editBtn budgetEdit" data-category="${cat}" id="budgetEdit">save</button>
         </div>
       </td>
-
       <td>$${expense.toFixed(2)}</td>
     `;
-
+    
     // もし予算が費用を下回れば背景色を変更
     if(budget < expense){
       tr.style.backgroundColor = "#FF4500"
@@ -156,16 +157,22 @@ function renderCategoryBudegetExpense(totals){
   return table;
 }
 
-// 予算の変更を反映するイベントリスナー
-document.addEventListener('input',(eventObj)=>{
-  if(eventObj.target.classList.contains('budgetInput')){
+function budgetEdit(){
+  document.querySelectorAll(".budgetEdit").forEach(element => {
+  // console.log(element);
+  element.addEventListener("click", (eventObj)=>{
     const category = eventObj.target.dataset.category;
-    const newBudget = parseFloat(eventObj.target.value);
+    const newBudget = parseFloat(eventObj.target.previousElementSibling.value);
     budgets[category] = newBudget;
     saveBudgets(budgets);
     renderChartWithChartJS(); //予算更新後チャートとテーブル再描画
   }
-})
+  )});
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  budgetEdit();
+});
 
 // badgetExpenceセクションに上記二つの関数を表示
 function renderBudgetExpenseTables(totals){
@@ -209,6 +216,7 @@ function calculateCategoryTotals(data) {
 
 document.addEventListener('DOMContentLoaded',loadBudgets);
 document.addEventListener('DOMContentLoaded',renderChartWithChartJS);
+
 
 /* Kaho starts here */
 
