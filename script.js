@@ -1,8 +1,8 @@
 // Masa starts here
 let chartInstance = null; 
 
-const budgets = {
-  food:600,
+let budgets = {
+  food:0,
   phone_charge:0,
   transportation:0,
   entertainment:0,
@@ -10,6 +10,17 @@ const budgets = {
   clothes:0,
   others:0
 };
+
+function saveBudgets(){
+  localStorage.setItem('budgets',JSON.stringify(budgets));
+}
+
+function loadBudgets(){
+  const storedBudets = localStorage.getItem('budgets');
+  if(storedBudets){
+    budgets = JSON.parse(storedBudets);
+  }
+}
 
 function renderChartWithChartJS() {
   const data = getAllExpenseData();
@@ -143,15 +154,15 @@ document.addEventListener('input',(eventObj)=>{
     const category = eventObj.dataset.category;
     const newBudget = parseFloat(eventObj.target.value);
     budgets[category] = newBudget;
-
-    renderChartWithChartJS(); //予算更新後、チャートとテーブル再描画
+    renderChartWithChartJS(); //予算更新後チャートとテーブル再描画
+    saveBudgets();
   }
 })
 
 // badgetExpenceセクションに上記二つの関数を表示
 function renderBudgetExpenseTables(totals){
   const container = document.querySelector('.budgetExpence');
-  container.innerHTML = '';
+  container.innerHTML = ''; // テーブル再描画のため過去のデータは空白化
   const totalTbale = renderTotalBudgetExpenseTable(totals);
   const categoryTable = renderCategoryBudegetExpense(totals);
 
@@ -189,6 +200,7 @@ function calculateCategoryTotals(data) {
 }
 
 document.addEventListener('DOMContentLoaded', renderChartWithChartJS);
+document.addEventListener('DOMContentLoaded',loadBudgets);
 
 /* Kaho starts here */
 const categories = ['food', 'phone_charge', 'transportation', 'entertainment', 'rent', 'clothes', 'others'];
