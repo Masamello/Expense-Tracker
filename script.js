@@ -315,7 +315,7 @@ function displayTable() {
 
   for (let i = 0; i < localStorage.length; i++){
     const key = localStorage.key(i);
-    if (key !== 'id'){
+    if (key !== 'id' && key !== 'budgets'){
       const value = JSON.parse(localStorage.getItem(key));
       // tableBody(value, key);
       dataArray.push({key, value}); //データを配列に取得
