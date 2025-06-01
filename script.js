@@ -133,7 +133,13 @@ function renderCategoryBudegetExpense(totals){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${capitalizeFirstLetter(cat)}</td>
-      <td><input type="number" class="budgetInput" value="${budget.toFixed(2)}" data-category="${cat}" /></td>
+      <td>
+        <div style="display: flex; gap: 5px; align-items: center;">
+          <input type="number" class="budgetInput" value="${budget.toFixed(2)}" data-category="${cat}" />
+          <button type="button" class="btn btn-light editBtn" data-category="${cat}" id="budgetEdit">save</button>
+        </div>
+      </td>
+
       <td>$${expense.toFixed(2)}</td>
     `;
 
