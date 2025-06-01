@@ -11,7 +11,9 @@ let budgets = {
   others:0
 };
 
-function saveBudgets(){
+const categories = ['food', 'phone_charge', 'transportation', 'entertainment', 'rent', 'clothes', 'others'];
+
+function saveBudgets(budgets){
   localStorage.setItem('budgets',JSON.stringify(budgets));
 }
 
@@ -151,11 +153,11 @@ function renderCategoryBudegetExpense(totals){
 // 予算の変更を反映するイベントリスナー
 document.addEventListener('input',(eventObj)=>{
   if(eventObj.target.classList.contains('budgetInput')){
-    const category = eventObj.dataset.category;
+    const category = eventObj.target.dataset.category;
     const newBudget = parseFloat(eventObj.target.value);
     budgets[category] = newBudget;
+    saveBudgets(budgets);
     renderChartWithChartJS(); //予算更新後チャートとテーブル再描画
-    saveBudgets();
   }
 })
 
@@ -199,11 +201,10 @@ function calculateCategoryTotals(data) {
   return totals;
 }
 
-document.addEventListener('DOMContentLoaded', renderChartWithChartJS);
 document.addEventListener('DOMContentLoaded',loadBudgets);
+document.addEventListener('DOMContentLoaded',renderChartWithChartJS);
 
 /* Kaho starts here */
-const categories = ['food', 'phone_charge', 'transportation', 'entertainment', 'rent', 'clothes', 'others'];
 
 document.addEventListener('DOMContentLoaded', getToday);
 document.addEventListener('DOMContentLoaded', setCategories(categories));
@@ -295,7 +296,6 @@ document.querySelector('#informationInputSubmit').addEventListener('click', (e) 
 //browser > localStrageに保存されているデータを取得、テーブルに表示
 function displayTable() {
   const tbody = document.querySelector('.expenceLists tbody');
-  console.log(tbody)
   tbody.innerText = '';
   const dataArray = [];
 
@@ -427,7 +427,6 @@ document.querySelector('.infoTable').addEventListener('click', (e) =>{
         const savedData = JSON.parse(localStorage.getItem(id));
         const values = [savedData.date, savedData.category, savedData.amount, savedData.description];
         values[1] = capitalizeFirstLetter(values[1]); //categoryの1文字目を大文字にする
-        console.log(savedData);
         for (let i = 0; i < values.length; i++) {
           tdAll[i].innerText = values[i];
         }
